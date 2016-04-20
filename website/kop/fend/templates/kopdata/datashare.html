@@ -1,0 +1,47 @@
+﻿{% extends "base.html" %}
+{% block linkstyle %}
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'kopdata/style.css' %}" />
+{% endblock %}
+
+{% block content %}
+{% load staticfiles %}
+
+<tr><td style="PADDING-LEFT: 0px; PADDING-TOP: 10px; PADDING-BOTTOM: 0px">
+	<table width = "100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF">
+	<tr> 	
+	<td style="PADDING-TOP: 0px; PADDING-LEFT: 10px; PADDING-RIGHT: 20px; PADDING-BOTTOM: 10px;">
+	<p><font style="font-size:16px" face="Arial" color="000000">我们为我们的合作伙伴提供以下数据服务：	
+	</font></p>
+	<p><font style="font-size:16px" face="Arial" color="000000">1. 数据整合服务： 如果您的电子病历系统无法检索基因检测结果。我们的数据平台正好可以弥补这方面的不足。您可以通过建造数据交换的软件界面，形成新一代的，面向精准医疗的信息平台。 
+	</font></p>
+	<p><font style="font-size:16px" face="Arial" color="000000">2. 数据应用服务: 通过我们的平台，您的数据将可以为更多的客户服务，您只须专心于数据采集的工作，我们为您完成数据管理，开拓用户市场的工作。
+	</font></p>		
+	</td></tr>
+	<tr><TD align=left height = 2 bgColor = #22B14C></TD></tr>	
+	<tr><td align = "left" valign = "center" style="PADDING-RIGHT: 20px; PADDING-LEFT: 10px; PADDING-TOP: 10px;">
+	<p><font style="font-size:16px" face="Arial" color="000000">如果您想加盟我们，请提交以下信息或者直接联系我们。</p>
+	<form action="datashare.htm" method="post">
+	{% csrf_token %}
+		<table width = "780" border = "0">
+  		<tr><td align = "left" style="PADDING-TOP: 10px;">{{form.name.label_tag}}</td><td>{{ form.name }}</td><td>{{form.email.label_tag}}</td><td>{{ form.email }}</td></tr>		
+		<tr><td align = "left" style="PADDING-TOP: 10px;">{{form.phone.label_tag}}</td><td>{{ form.phone }}</td><td>{{form.title.label_tag}}</td><td>{{ form.title }}</td></tr>
+		<tr><td align = "left" style="PADDING-TOP: 10px;">{{form.company.label_tag}}</td><td>{{ form.company }}</td><td>{{form.address.label_tag}}</td><td>{{ form.address }}</td></tr>
+		<tr><td align = "left" style="PADDING-TOP: 10px;">{{form.city.label_tag}}</td><td>{{ form.city }}</td><td>{{form.state.label_tag}}</td><td>{{ form.state }}</td></tr>
+		<tr><td align = "left" style="PADDING-TOP: 10px;">{{form.country.label_tag}}</td><td>{{ form.country }}</td><td></td><td></td></tr>		
+		</table>
+		<table width = "680" border = "0">
+		<tr><td align = "left" style="PADDING-TOP: 10px;" widht="2%">{{form.description.label_tag}}</td><td widht="98%">{{ form.description }}</td></tr>
+		<tr><td widht="2%"></td><td align = "right" style="PADDING-TOP: 10px; PADDING-RIGHT: 40px;" widht="98%"><input type="submit" value="提交"></td></tr>
+		</table>
+	</form> 
+	</td></tr>
+	<tr><td style="PADDING-TOP: 20px; PADDING-LEFT: 10px; PADDING-RIGHT: 20px"><font style="font-size:22px" face="Arial" color="000099">
+	联系我们:</font><br>
+	<font style="font-size:16px" face="Arial" color="000000">
+		sales@kopgenome.com
+	</font>
+	</td></tr>
+	</table>
+</td></tr>
+{% endblock %}

@@ -1,0 +1,853 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head profile="http://gmpg.org/xfn/11">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="generator" content="WordPress 4.4.2" /> <!-- leave this for stats -->
+	<link rel="stylesheet" href="http://www.nuonsoft.com/blog/wp-content/themes/fresh/style.css" type="text/css" media="screen" />
+	<link rel="alternate" type="application/rss+xml" title="Marc Gregoire&#8217;s Blog RSS 2.0" href="http://www.nuonsoft.com/blog/feed/" />
+	<link rel="alternate" type="application/atom+xml" title="Marc Gregoire&#8217;s Blog Atom 0.3" href="http://www.nuonsoft.com/blog/feed/atom/" />
+	<link rel="pingback" href="http://www.nuonsoft.com/blog/xmlrpc.php" />
+	<title>
+		  Introduction to WIC: How to use WIC to load an image, and draw it with GDI? &laquo; Marc Gregoire&#8217;s Blog	</title>
+	<link rel="shortcut icon" href="http://www.nuonsoft.com/blog/wp-content/themes/fresh/images/favicon.ico" type="image/x-icon" />
+	<link rel="icon" href="http://www.nuonsoft.com/blog/wp-content/themes/fresh/images/favicon.ico" type="image/x-icon" />
+<link rel="alternate" type="application/rss+xml" title="Marc Gregoire&#039;s Blog &raquo; Introduction to WIC: How to use WIC to load an image, and draw it with GDI? Comments Feed" href="http://www.nuonsoft.com/blog/2011/10/17/introduction-to-wic-how-to-use-wic-to-load-an-image-and-draw-it-with-gdi/feed/" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/72x72\/","ext":".png","source":{"concatemoji":"http:\/\/www.nuonsoft.com\/blog\/wp-includes\/js\/wp-emoji-release.min.js?ver=41fa24b8772c46e3029f839c8be5ce7c"}};
+			!function(a,b,c){function d(a){var c,d=b.createElement("canvas"),e=d.getContext&&d.getContext("2d"),f=String.fromCharCode;return e&&e.fillText?(e.textBaseline="top",e.font="600 32px Arial","flag"===a?(e.fillText(f(55356,56806,55356,56826),0,0),d.toDataURL().length>3e3):"diversity"===a?(e.fillText(f(55356,57221),0,0),c=e.getImageData(16,16,1,1).data.toString(),e.fillText(f(55356,57221,55356,57343),0,0),c!==e.getImageData(16,16,1,1).data.toString()):("simple"===a?e.fillText(f(55357,56835),0,0):e.fillText(f(55356,57135),0,0),0!==e.getImageData(16,16,1,1).data[0])):!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g;c.supports={simple:d("simple"),flag:d("flag"),unicode8:d("unicode8"),diversity:d("diversity")},c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.simple&&c.supports.flag&&c.supports.unicode8&&c.supports.diversity||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel='stylesheet' id='cptch_stylesheet-css'  href='http://www.nuonsoft.com/blog/wp-content/plugins/captcha/css/style.css?ver=41fa24b8772c46e3029f839c8be5ce7c' type='text/css' media='all' />
+<link rel='stylesheet' id='dashicons-css'  href='http://www.nuonsoft.com/blog/wp-includes/css/dashicons.min.css?ver=41fa24b8772c46e3029f839c8be5ce7c' type='text/css' media='all' />
+<link rel='stylesheet' id='cptch_desktop_style-css'  href='http://www.nuonsoft.com/blog/wp-content/plugins/captcha/css/desktop_style.css?ver=41fa24b8772c46e3029f839c8be5ce7c' type='text/css' media='all' />
+<link rel='stylesheet' id='A2A_SHARE_SAVE-css'  href='http://www.nuonsoft.com/blog/wp-content/plugins/add-to-any/addtoany.min.css?ver=41fa24b8772c46e3029f839c8be5ce7c' type='text/css' media='all' />
+<script type='text/javascript' src='http://www.nuonsoft.com/blog/wp-includes/js/jquery/jquery.js?ver=41fa24b8772c46e3029f839c8be5ce7c'></script>
+<script type='text/javascript' src='http://www.nuonsoft.com/blog/wp-includes/js/jquery/jquery-migrate.min.js?ver=41fa24b8772c46e3029f839c8be5ce7c'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var cptch_vars = {"nonce":"3ec74678bf","ajaxurl":"http:\/\/www.nuonsoft.com\/blog\/wp-admin\/admin-ajax.php","enlarge":"0"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://www.nuonsoft.com/blog/wp-content/plugins/captcha/js/front_end_script.js?ver=41fa24b8772c46e3029f839c8be5ce7c'></script>
+<link rel='https://api.w.org/' href='http://www.nuonsoft.com/blog/wp-json/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.nuonsoft.com/blog/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.nuonsoft.com/blog/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='C++11 Standard Published by ISO' href='http://www.nuonsoft.com/blog/2011/10/11/c11-standard-published-by-iso/' />
+<link rel='next' title='Wallpaper Cycler Uses Axialis Ribbon &#038; Toolbar Stock Icons' href='http://www.nuonsoft.com/blog/2011/10/20/wallpaper-cycler-uses-axialis-ribbon-toolbar-stock-icons/' />
+
+<link rel="canonical" href="http://www.nuonsoft.com/blog/2011/10/17/introduction-to-wic-how-to-use-wic-to-load-an-image-and-draw-it-with-gdi/comment-page-1/#comments" />
+<link rel='shortlink' href='http://www.nuonsoft.com/blog/?p=711' />
+<link rel="alternate" type="application/json+oembed" href="http://www.nuonsoft.com/blog/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.nuonsoft.com%2Fblog%2F2011%2F10%2F17%2Fintroduction-to-wic-how-to-use-wic-to-load-an-image-and-draw-it-with-gdi%2F" />
+<link rel="alternate" type="text/xml+oembed" href="http://www.nuonsoft.com/blog/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.nuonsoft.com%2Fblog%2F2011%2F10%2F17%2Fintroduction-to-wic-how-to-use-wic-to-load-an-image-and-draw-it-with-gdi%2F&#038;format=xml" />
+
+<script type="text/javascript"><!--
+var a2a_config=a2a_config||{},wpa2a={done:false,html_done:false,script_ready:false,script_load:function(){var a=document.createElement('script'),s=document.getElementsByTagName('script')[0];a.type='text/javascript';a.async=true;a.src='http://static.addtoany.com/menu/page.js';s.parentNode.insertBefore(a,s);wpa2a.script_load=function(){};},script_onready:function(){wpa2a.script_ready=true;if(wpa2a.html_done)wpa2a.init();},init:function(){for(var i=0,el,target,targets=wpa2a.targets,length=targets.length;i<length;i++){el=document.getElementById('wpa2a_'+(i+1));target=targets[i];a2a_config.linkname=target.title;a2a_config.linkurl=target.url;if(el){a2a.init('page',{target:el});el.id='';}wpa2a.done=true;}wpa2a.targets=[];}};a2a_config.callbacks=a2a_config.callbacks||[];a2a_config.callbacks.push({ready:wpa2a.script_onready});a2a_config.templates=a2a_config.templates||{};
+//--></script>
+
+<style type="text/css">
+.a-stats {
+	width: auto;
+}
+.a-stats a {
+	background: #7CA821;
+	background-image:-moz-linear-gradient(0% 100% 90deg,#5F8E14,#7CA821);
+	background-image:-webkit-gradient(linear,0% 0,0% 100%,from(#7CA821),to(#5F8E14));
+	border: 1px solid #5F8E14;
+	border-radius:3px;
+	color: #CFEA93;
+	cursor: pointer;
+	display: block;
+	font-weight: normal;
+	height: 100%;
+	-moz-border-radius:3px;
+	padding: 7px 0 8px;
+	text-align: center;
+	text-decoration: none;
+	-webkit-border-radius:3px;
+	width: 100%;
+}
+.a-stats a:hover {
+	text-decoration: none;
+	background-image:-moz-linear-gradient(0% 100% 90deg,#6F9C1B,#659417);
+	background-image:-webkit-gradient(linear,0% 0,0% 100%,from(#659417),to(#6F9C1B));
+}
+.a-stats .count {
+	color: #FFF;
+	display: block;
+	font-size: 15px;
+	line-height: 16px;
+	padding: 0 13px;
+	white-space: nowrap;
+}
+</style>
+
+<script type="text/javascript">
+(function(url){
+	if(/(?:Chrome\/26\.0\.1410\.63 Safari\/537\.31|WordfenceTestMonBot)/.test(navigator.userAgent)){ return; }
+	var addEvent = function(evt, handler) {
+		if (window.addEventListener) {
+			document.addEventListener(evt, handler, false);
+		} else if (window.attachEvent) {
+			document.attachEvent('on' + evt, handler);
+		}
+	};
+	var removeEvent = function(evt, handler) {
+		if (window.removeEventListener) {
+			document.removeEventListener(evt, handler, false);
+		} else if (window.detachEvent) {
+			document.detachEvent('on' + evt, handler);
+		}
+	};
+	var evts = 'contextmenu dblclick drag dragend dragenter dragleave dragover dragstart drop keydown keypress keyup mousedown mousemove mouseout mouseover mouseup mousewheel scroll'.split(' ');
+	var logHuman = function() {
+		var wfscr = document.createElement('script');
+		wfscr.type = 'text/javascript';
+		wfscr.async = true;
+		wfscr.src = url + '&r=' + Math.random();
+		(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(wfscr);
+		for (var i = 0; i < evts.length; i++) {
+			removeEvent(evts[i], logHuman);
+		}
+	};
+	for (var i = 0; i < evts.length; i++) {
+		addEvent(evts[i], logHuman);
+	}
+})('//www.nuonsoft.com/blog/?wordfence_logHuman=1&hid=0097FDAE21F80C84CDA05C802228E807');
+</script><style type="text/css" id="syntaxhighlighteranchor"></style>
+</head>
+
+<body>
+
+<div id="outline">
+
+	<div id="header">
+		<div class="blogtitle">
+			<h1><a href="http://www.nuonsoft.com/blog" title="Marc Gregoire&#8217;s Blog">Marc Gregoire&#8217;s Blog</a></h1>
+		</div>
+	</div> <!-- end of #header -->
+
+	<div id="navbar">
+		<ul class="menu">
+			<li class="current_page_item"><a href="http://www.nuonsoft.com/blog">Home</a></li>
+			<li class="page_item page-item-2"><a href="http://www.nuonsoft.com/blog/about/">About Me</a></li>
+<li class="page_item page-item-1496"><a href="http://www.nuonsoft.com/blog/books-i-worked-on/">Books I Worked On</a></li>
+			<li><a href="http://www.nuonsoft.com/blog/wp-login.php?action=register">Register</a></li>		</ul>
+
+		<div class="searchbar">
+			<form method="get" id="searchform" action="http://www.nuonsoft.com/blog/">
+	<div>
+	<input onblur="if(this.value=='') this.value='type and hit enter to search'" onfocus="if(this.value=='type and hit enter to search') this.value=''" type="text" value="type and hit enter to search" name="s" id="s" />
+	</div>
+</form>
+		</div>
+	</div> <!-- end of #navbar -->
+
+
+<div id="wrapper">
+
+<div id="content">
+
+<table style="width:100%"><tr><td style="width:100%" valign="top">
+
+	
+		<div class="post" id="post-711">
+
+			<h2 class="posttitle">
+				<a href="http://www.nuonsoft.com/blog/2011/10/17/introduction-to-wic-how-to-use-wic-to-load-an-image-and-draw-it-with-gdi/" rel="bookmark" title="Permanent link to Introduction to WIC: How to use WIC to load an image, and draw it with GDI?">Introduction to WIC: How to use WIC to load an image, and draw it with GDI?</a>
+			</h2>
+
+			<p class="postmeta">
+				<span class="post-date">17 Oct, 2011</span>&nbsp;
+				<span class="post-cate"><a href="http://www.nuonsoft.com/blog/category/c/" rel="category tag">C++</a>, <a href="http://www.nuonsoft.com/blog/category/software-development/" rel="category tag">Software Development</a></span>
+				<span class="post-tags"><a href="http://www.nuonsoft.com/blog/tag/wic/" rel="tag">WIC</a> <a href="http://www.nuonsoft.com/blog/tag/windows-imaging-component/" rel="tag">Windows Imaging Component</a></span>
+							</p>
+
+			<div class="postentry">
+			<p>The Windows Imaging Component (WIC) is a flexible and robust API for working with images on Windows. The API is extensible. Third-party vendors can create new image codecs (readers and writers) to make new image formats available to all applications that use the WIC API. Here is a brief <a href="http://msdn.microsoft.com/en-us/library/ee719654.aspx" target="_blank">description from the MSDN</a>:</p>
+<blockquote><p>The Windows Imaging Component (WIC) provides an extensible framework for working with images and image metadata. WIC makes it possible for independent software vendors (ISVs) and independent hardware vendors (IHVs) to develop their own image codecs and get the same platform support as standard image formats (for example, TIFF, JPEG, PNG, GIF, BMP, and HDPhoto). A single, consistent set of interfaces is used for all image processing, regardless of image format, so any application using the WIC gets automatic support for new image formats as soon as the codec is installed. The extensible metadata framework makes it possible for applications to read and write their own proprietary metadata directly to image files, so the metadata never gets lost or separated from the image.</p></blockquote>
+<p>The MSDN states the primary features of WIC as follows:</p>
+<ul>
+<li>Enables application developers to perform image processing operations on any image format through a single, consistent set of common interfaces, without requiring prior knowledge of specific image formats.</li>
+<li>Provides an extensible &#8220;plug and play&#8221; architecture for image codecs, pixel formats, and metadata, with automatic run-time discovery of new formats.</li>
+<li>Supports reading and writing of arbitrary metadata in image files, with the ability to preserve unrecognized metadata during editing.</li>
+<li>Preserves high bit depth image data, up to 32 bits per channel, throughout the image processing pipeline.</li>
+<li>Provides built-in support for most popular image formats, pixel formats, and metadata schemas.</li>
+</ul>
+<p>WIC comes with the following standard built-in codecs:</p>
+<ul>
+<li>BMP (Windows Bitmap Format), BMP Specification v5.</li>
+<li>GIF (Graphics Interchange Format 89a), GIF Specification 89a/89m</li>
+<li>ICO (Icon Format)</li>
+<li>JPEG (Joint Photographic Experts Group), JFIF Specification 1.02</li>
+<li>PNG (Portable Network Graphics), PNG Specification 1.2</li>
+<li>TIFF (Tagged Image File Format), TIFF Specification 6.0</li>
+<li>Windows Media Photo, HD Photo Specification 1.0</li>
+</ul>
+<p>All codecs can both load and save the specific image format, except the ICO codec which can only load icon files and not save them.</p>
+<p>Reading all this, it looks like WIC is pretty powerful, and the best part is that it&#8217;s easy to use as I will demonstrate in this article.<span id="more-711"></span> So, let&#8217;s get started with some code.<br />
+The first thing you need to do is include the following headers and link with Windowscodecs.lib:</p>
+<pre class="brush: cpp; title: ; notranslate" title="">#include &lt;wincodec.h&gt;
+#include &lt;wincodecsdk.h&gt;</pre>
+<p>WIC uses COM, however, this should not scare you away. The main thing to remember is to use a COM smart pointer which makes it much easier and prevents memory leaks. The COM smart pointer I&#8217;ll be using is <a href="http://msdn.microsoft.com/en-us/library/ezzw7k98(v=VS.100).aspx" target="_blank">CComPtr</a>. This smart pointer is defined in atlbase.h.<br />
+To start working with WIC, you need an instance of the <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ee690281(v=VS.85).aspx" target="_blank">IWICImagingFactory</a>. You only have to create one such instance and can use it for the entire lifetime of the application. Below is the header file of a class that wraps an IWICImagingFactory instance into a singleton class to give easy access to it from anywhere in your application.</p>
+<pre class="brush: cpp; title: ; notranslate" title="">#pragma once
+
+#include &lt;atlbase.h&gt;
+#include &lt;wincodec.h&gt;
+#include &lt;memory&gt;
+
+class CWICImagingFactory
+{
+public:
+	inline static CWICImagingFactory&amp; GetInstance()
+	{
+		if (nullptr == m_pInstance.get())
+			m_pInstance.reset(new CWICImagingFactory());
+		return *m_pInstance;
+	}
+
+	virtual IWICImagingFactory* GetFactory() const;
+
+protected:
+	CComPtr&lt;IWICImagingFactory&gt; m_pWICImagingFactory;
+
+private:
+	CWICImagingFactory();	// Private because singleton
+	static std::shared_ptr&lt;CWICImagingFactory&gt; m_pInstance;
+};</pre>
+<p>This code is using the C++11 <a href="http://msdn.microsoft.com/en-us/library/bb982026.aspx" target="_blank">std::shared_ptr</a> smart pointer. If your compiler does not yet support this smart pointer, you can replace it with any other smart pointer, for example boost::shared_ptr. Note that this singleton class is not threadsafe. The GetInstance() method contains a race-condition. So, if you need this singleton to be threadsafe, you&#8217;ll have to add some synchronization to the GetInstance() method.</p>
+<p>The implementation file of the CWICImagingFactory is rather straightforward:</p>
+<pre class="brush: cpp; title: ; notranslate" title="">#include &quot;stdafx.h&quot;
+#include &quot;WICImagingFactory.h&quot;
+#include &lt;assert.h&gt;
+
+std::shared_ptr&lt;CWICImagingFactory&gt; CWICImagingFactory::m_pInstance;
+
+CWICImagingFactory::CWICImagingFactory()
+	: m_pWICImagingFactory(nullptr)
+{
+	HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER,
+		IID_IWICImagingFactory, (LPVOID*)&amp;m_pWICImagingFactory);
+	assert(SUCCEEDED(hr));
+}
+
+IWICImagingFactory* CWICImagingFactory::GetFactory()  const
+{
+	assert(m_pWICImagingFactory);
+	return m_pWICImagingFactory;
+}</pre>
+<p>Now that we have access to an IWICImagingFactory instance, let&#8217;s start with writing the definition of a class called CNuonImg that uses WIC to load and render images.</p>
+<pre class="brush: cpp; title: ; notranslate" title="">#pragma once
+
+#include &lt;atlbase.h&gt;
+#include &lt;wincodec.h&gt;
+#include &lt;wincodecsdk.h&gt;
+
+class CNuonImg
+{
+public:
+	CNuonImg();
+	virtual ~CNuonImg();
+
+	// Opens the nFrame-th frame of the given image file.
+	// Throws HRESULT in case of failure.
+	virtual void Open(const wchar_t* pszFile, UINT nFrame = 0);
+
+	// Returns true if an image is loaded successfully, false otherwise
+	virtual bool IsLoaded() const;
+
+	// Renders the loaded image to the given device context hDC,
+	// at position x,y and size cx, cy.
+	// Throws HRESULT in case of failure.
+	virtual void Render(HDC hDC, UINT x, UINT y, UINT cx, UINT cy);
+
+	// Returns the width of the loaded image.
+	virtual UINT GetWidth() const;
+
+	// Returns the height of the loaded image.
+	virtual UINT GetHeight() const;
+
+protected:
+	virtual void Cleanup();
+
+	CComPtr&lt;IWICBitmapDecoder&gt; m_pDecoder;
+	CComPtr&lt;IWICBitmapFrameDecode&gt; m_pFrame;
+	CComPtr&lt;IWICFormatConverter&gt; m_pConvertedFrame;
+	UINT m_nWidth;
+	UINT m_nHeight;
+};</pre>
+<p>The constructor of this class initializes the data members, and initializes COM.</p>
+<pre class="brush: cpp; title: ; notranslate" title="">CNuonImg::CNuonImg()
+	: m_pDecoder(nullptr)
+	, m_pFrame(nullptr)
+	, m_pConvertedFrame(nullptr)
+	, m_nWidth(0)
+	, m_nHeight(0)
+{
+	// Initialize COM
+	CoInitialize(nullptr);
+}</pre>
+<p>The destructor performs some cleanup and uninitializes COM.</p>
+<pre class="brush: cpp; title: ; notranslate" title="">CNuonImg::~CNuonImg()
+{
+	Cleanup();
+
+	// Uninitialize COM
+	CoUninitialize();
+}</pre>
+<p>The Cleanup() method cleans up the previously loaded image and prepares the class to load another image.</p>
+<pre class="brush: cpp; title: ; notranslate" title="">void CNuonImg::Cleanup()
+{
+	m_nWidth = m_nHeight = 0;
+
+	if (m_pConvertedFrame)
+	{
+		m_pConvertedFrame.Release();
+		m_pConvertedFrame = nullptr;
+	}
+	if (m_pFrame)
+	{
+		m_pFrame.Release();
+		m_pFrame = nullptr;
+	}
+	if (m_pDecoder)
+	{
+		m_pDecoder.Release();
+		m_pDecoder = nullptr;
+	}
+}</pre>
+<p>It&#8217;s not strictly required to call Cleanup() from the destructor. The class is using CComPtr to wrap all COM pointers, and the CComPtr class will automatically release the COM pointers when the destructor of the CComPtr instances is executed. However, the class needs a Cleanup() method anyway, to allow loading a second image with the same CNuonImg instance, so, we might as well call the Cleanup() method in the destructor also.</p>
+<p>The remaining of the code will call a lot of methods on COM interfaces. It&#8217;s good coding practice to check the return value of each COM method call. To make this easier, the code uses the following little helper macro:</p>
+<pre class="brush: cpp; title: ; notranslate" title="">#define IfFailedThrowHR(expr) {HRESULT hr = (expr); if (FAILED(hr)) throw hr;}</pre>
+<p>This executes an expression expr, which returns an HRESULT. The HRESULT is checked and if it&#8217;s a failure, the HRESULT value is thrown as an exception. You should change this error handling mechanism to suit your requirements.</p>
+<p>The Open() method is of course the most interesting method. It loads the given image. The parameter nFrame is the index of the frame that you want to load. Certain image formats, for example TIFF and GIF, support multiple frames inside a single image file. The first frame in the file has index 0.</p>
+<pre class="brush: cpp; title: ; notranslate" title="">void CNuonImg::Open(const wchar_t* pszFile, UINT nFrame/* = 0*/)
+{
+	try
+	{
+		// Cleanup a previously loaded image
+		Cleanup();
+
+		// Get the WIC factory from the singleton wrapper class
+		IWICImagingFactory* pFactory = CWICImagingFactory::GetInstance().GetFactory();
+		assert(pFactory);
+		if (!pFactory)
+			throw WINCODEC_ERR_NOTINITIALIZED;
+
+		// Create a decoder for the given image file
+		IfFailedThrowHR(pFactory-&gt;CreateDecoderFromFilename(
+			pszFile, NULL, GENERIC_READ, WICDecodeMetadataCacheOnDemand, &amp;m_pDecoder));
+
+		// Validate the given frame index nFrame
+		UINT nCount = 0;
+		// Get the number of frames in this image
+		if (SUCCEEDED(m_pDecoder-&gt;GetFrameCount(&amp;nCount)))
+		{
+			if (nFrame &gt;= nCount)
+				nFrame = nCount - 1; // If the requested frame number is too big, default to the last frame
+		}
+		// Retrieve the requested frame of the image from the decoder
+		IfFailedThrowHR(m_pDecoder-&gt;GetFrame(nFrame, &amp;m_pFrame));
+
+		// Retrieve the image dimensions
+		IfFailedThrowHR(m_pFrame-&gt;GetSize(&amp;m_nWidth, &amp;m_nHeight));
+
+		// Convert the format of the image frame to 32bppBGR
+		IfFailedThrowHR(pFactory-&gt;CreateFormatConverter(&amp;m_pConvertedFrame));
+		IfFailedThrowHR(m_pConvertedFrame-&gt;Initialize(
+				m_pFrame,                        // Source frame to convert
+				GUID_WICPixelFormat32bppBGR,     // The desired pixel format
+				WICBitmapDitherTypeNone,         // The desired dither pattern
+				NULL,                            // The desired palette 
+				0.f,                             // The desired alpha threshold
+				WICBitmapPaletteTypeCustom       // Palette translation type
+				));
+	}
+	catch (...)
+	{
+		// Cleanup after something went wrong
+		Cleanup();
+		// Rethrow the exception, so the client code can handle it
+		throw;
+	}
+}</pre>
+<p>The above code shows the basics of loading an image. To learn more about the different parameters to the different COM calls, consult the MSDN. Here are a couple of MSDN links to make it easy to find the right pages:</p>
+<ul>
+<li><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ee690281(v=VS.85).aspx" target="_blank">IWICImagingFactory</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ee690307(v=vs.85).aspx" target="_blank">IWICImagingFactory::CreateDecoderFromFilename()</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ee690086(v=VS.85).aspx" target="_blank">IWICBitmapDecoder</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ee690099(v=VS.85).aspx" target="_blank">IWICBitmapDecoder::GetFrameCount()</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ee690098(v=VS.85).aspx" target="_blank">IWICBitmapDecoder::GetFrame()</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ee690134(v=VS.85).aspx" target="_blank">IWICBitmapFrameDecode</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ee690185(v=VS.85).aspx" target="_blank">IWICBitmapSource::GetSize()</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ee690317(v=vs.85).aspx" target="_blank">IWICImagingFactory::CreateFormatConverter()</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ee690274(v=vs.85).aspx" target="_blank">IWICFormatConverter</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ee690279(v=VS.85).aspx" target="_blank">IWICFormatConverter::Initialize()</a></li>
+</ul>
+<p>The CNuonImg::IsLoaded(), CNuonImg::GetWidth(), and CNuonImg::GetHeigh() methods are simple one-liners.</p>
+<pre class="brush: cpp; title: ; notranslate" title="">bool CNuonImg::IsLoaded() const
+{
+	return m_pConvertedFrame != nullptr;
+}
+
+UINT CNuonImg::GetWidth() const
+{
+	return m_nWidth;
+}
+
+UINT CNuonImg::GetHeight() const
+{
+	return m_nHeight;
+}</pre>
+<p>The CNuonImg::Render() method is responsible for rendering the image to the given HDC.</p>
+<pre class="brush: cpp; title: ; notranslate" title="">#define DIB_WIDTHBYTES(bits) ((((bits) + 31)&gt;&gt;5)&lt;&lt;2)
+
+void CNuonImg::Render(HDC hDC, UINT x, UINT y, UINT cx, UINT cy)
+{
+	// Make sure an image has been loaded
+	if (!IsLoaded())
+		throw WINCODEC_ERR_WRONGSTATE;
+
+	// Get the WIC factory from the singleton wrapper class
+	IWICImagingFactory* pFactory = CWICImagingFactory::GetInstance().GetFactory();
+	if (!pFactory)
+		throw WINCODEC_ERR_NOTINITIALIZED;
+
+	// Create a WIC image scaler to scale the image to the requested size
+	CComPtr&lt;IWICBitmapScaler&gt; pScaler = nullptr;
+	IfFailedThrowHR(pFactory-&gt;CreateBitmapScaler(&amp;pScaler));
+	IfFailedThrowHR(pScaler-&gt;Initialize(m_pConvertedFrame, cx, cy, WICBitmapInterpolationModeFant));
+
+	// Render the image to a GDI device context
+	HBITMAP hDIBBitmap = NULL;
+	try
+	{
+		// Get a DC for the full screen
+		HDC hdcScreen = GetDC(NULL);
+		if (!hdcScreen)
+			throw 1;
+
+		BITMAPINFO bminfo;
+		ZeroMemory(&amp;bminfo, sizeof(bminfo));
+		bminfo.bmiHeader.biSize         = sizeof(BITMAPINFOHEADER);
+		bminfo.bmiHeader.biWidth        = cx;
+		bminfo.bmiHeader.biHeight       = -(LONG)cy;
+		bminfo.bmiHeader.biPlanes       = 1;
+		bminfo.bmiHeader.biBitCount     = 32;
+		bminfo.bmiHeader.biCompression  = BI_RGB;		
+
+		void* pvImageBits = nullptr;	// Freed with DeleteObject(hDIBBitmap)
+		hDIBBitmap = CreateDIBSection(hdcScreen, &amp;bminfo, DIB_RGB_COLORS, &amp;pvImageBits, NULL, 0);
+		if (!hDIBBitmap)
+			throw 2;
+
+		ReleaseDC(NULL, hdcScreen);
+
+		// Calculate the number of bytes in 1 scanline
+		UINT nStride = DIB_WIDTHBYTES(cx * 32);
+		// Calculate the total size of the image
+		UINT nImage = nStride * cy;
+		// Copy the pixels to the DIB section
+		IfFailedThrowHR(pScaler-&gt;CopyPixels(nullptr, nStride, nImage, reinterpret_cast&lt;BYTE*&gt;(pvImageBits)));
+
+		// Copy the bitmap to the target device context
+		::SetDIBitsToDevice(hDC, x, y, cx, cy, 0, 0, 0, cy, pvImageBits, &amp;bminfo, DIB_RGB_COLORS);
+
+		DeleteObject(hDIBBitmap);
+	}
+	catch (...)
+	{
+		if (hDIBBitmap)
+			DeleteObject(hDIBBitmap);
+		// Rethrow the exception, so the client code can handle it
+		throw;
+	}
+}</pre>
+<p>Here are some links to the MSDN documentation to learn more about the different parameters to the functions used in the above piece of code.</p>
+<ul>
+<li><a href="http://msdn.microsoft.com/en-us/library/ee690168(VS.85).aspx" target="_blank">IWICBitmapScaler</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ee690296(v=vs.85).aspx" target="_blank">IWICImagingFactory::CreateBitmapScaler()</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/ee690169(v=VS.85).aspx" target="_blank">IWICBitmapScaler::Initialize()</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/dd183494(VS.85).aspx" target="_blank">CreateDIBSection()</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/ee690179(v=VS.85).aspx" target="_blank">IWICBitmapSource::CopyPixels()</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/dd162974(VS.85).aspx" target="_blank">SetDIBitsToDevice()</a></li>
+</ul>
+<p>Now you can start using the class to load and render images. The basic flow for rendering an image to a device context (hDC) at position (0,0) with given width and height is as follows:</p>
+<pre class="brush: cpp; title: ; notranslate" title="">try
+{
+	CNuonImg img;
+	wchar_t* filename = L&quot;C:\\Users\\Public\\Pictures\\Sample Pictures\\Tulips.jpg&quot;;
+	img.Open(filename);
+	img.Render(hDC, 0, 0, width, height);
+}
+catch (HRESULT hr)
+{
+	// Handle error
+}</pre>
+<p><a href="http://www.nuonsoft.com/downlds/WICDemo1.zip">Click here</a> to download a small MFC demo application that uses the above class to load an image.</p>
+<p>That&#8217;s it for this first introduction to WIC. If you have suggestions for topics for future posts about WIC, let me know in the comments below.</p>
+<div class="addtoany_share_save_container addtoany_content_bottom"><div class="a2a_kit a2a_kit_size_ addtoany_list a2a_target" id="wpa2a_1"><a class="a2a_dd addtoany_share_save" href="https://www.addtoany.com/share"><img src="http://www.nuonsoft.com/blog/wp-content/plugins/add-to-any/share_save_171_16.png" width="171" height="16" alt="Share"/></a>
+<script type="text/javascript"><!--
+if(wpa2a)wpa2a.script_load();
+//--></script>
+</div></div>						</div>
+
+		</div>
+
+		<div class="post">
+			
+<!-- You can start editing here. -->
+
+
+	<h2 class="comments-num">
+		4 Comments					 so far <a href="#postcomment" title="Jump to the comments form">&raquo;</a>
+			</h2>
+
+	<ol id="commentlist">
+
+	
+		<li class="alt" id="comment-32093">
+
+		<!-- Gravatar -->
+		<div class="comment-gravatar">
+			<img alt='' src='http://1.gravatar.com/avatar/ae600cb41baa60bce17302c2586dabec?s=48&#038;d=http%3A%2F%2Fwww.nuonsoft.com%2Fblog%2Fwp-content%2Fthemes%2Ffresh%2Fimages%2Fdefault_gravatar.gif&#038;r=g' srcset='http://1.gravatar.com/avatar/ae600cb41baa60bce17302c2586dabec?s=96&amp;d=http%3A%2F%2Fwww.nuonsoft.com%2Fblog%2Fwp-content%2Fthemes%2Ffresh%2Fimages%2Fdefault_gravatar.gif&amp;r=g 2x' class='avatar avatar-48 photo' height='48' width='48' />		</div>
+
+		<h3 class="comment-title">John Schroedl said,</h3>
+
+		<p class="comment-meta">
+			Wrote on 			<a href="#comment-32093">
+				October 18, 2011				 @ 7:34 pm			</a>
+					</p>
+
+		<div class="comment-text"><p>This is some nice work. Thanks for posting it I have two questions:</p>
+<p>1. I don&#8217;t see any reason to use shared_ptr over unique_ptr in the singleton. Am I missing something?</p>
+<p>2. Whats a Nuon?</p>
+</div>
+		</li>
+
+		
+	
+		<li class="" id="comment-32096">
+
+		<!-- Gravatar -->
+		<div class="comment-gravatar">
+			<img alt='' src='http://1.gravatar.com/avatar/4e65927bf1de462738eb5644190f4bc9?s=48&#038;d=http%3A%2F%2Fwww.nuonsoft.com%2Fblog%2Fwp-content%2Fthemes%2Ffresh%2Fimages%2Fdefault_gravatar.gif&#038;r=g' srcset='http://1.gravatar.com/avatar/4e65927bf1de462738eb5644190f4bc9?s=96&amp;d=http%3A%2F%2Fwww.nuonsoft.com%2Fblog%2Fwp-content%2Fthemes%2Ffresh%2Fimages%2Fdefault_gravatar.gif&amp;r=g 2x' class='avatar avatar-48 photo' height='48' width='48' />		</div>
+
+		<h3 class="comment-title"><a href='http://www.nuonsoft.com' rel='external nofollow' class='url'>Marc Gregoire</a> said,</h3>
+
+		<p class="comment-meta">
+			Wrote on 			<a href="#comment-32096">
+				October 18, 2011				 @ 8:52 pm			</a>
+					</p>
+
+		<div class="comment-text"><p>Hi John,</p>
+<p>1. You are right, you could use std::unique_ptr instead of shared_ptr. I&#8217;m just used to use shared_ptr most of the time.</p>
+<p>2. Nuon -> if you look at my domain name, which is NuonSoft, I guess the name CNuonImg becomes clear <img src="http://www.nuonsoft.com/blog/wp-includes/images/smilies/simple-smile.png" alt=":)" class="wp-smiley" style="height: 1em; max-height: 1em;" /></p>
+</div>
+		</li>
+
+		
+	
+		<li class="alt" id="comment-75567">
+
+		<!-- Gravatar -->
+		<div class="comment-gravatar">
+			<img alt='' src='http://0.gravatar.com/avatar/03a12d981709813661ba7759e59cab64?s=48&#038;d=http%3A%2F%2Fwww.nuonsoft.com%2Fblog%2Fwp-content%2Fthemes%2Ffresh%2Fimages%2Fdefault_gravatar.gif&#038;r=g' srcset='http://0.gravatar.com/avatar/03a12d981709813661ba7759e59cab64?s=96&amp;d=http%3A%2F%2Fwww.nuonsoft.com%2Fblog%2Fwp-content%2Fthemes%2Ffresh%2Fimages%2Fdefault_gravatar.gif&amp;r=g 2x' class='avatar avatar-48 photo' height='48' width='48' />		</div>
+
+		<h3 class="comment-title">Tony Teveris said,</h3>
+
+		<p class="comment-meta">
+			Wrote on 			<a href="#comment-75567">
+				February 25, 2014				 @ 5:59 pm			</a>
+					</p>
+
+		<div class="comment-text"><p>Can anyone point me in the direction of handling transparent images only using WIC and GDI?</p>
+<p>Thanks<br />
+T</p>
+<p>Marc &#8211; thanks for the sample and explanation</p>
+</div>
+		</li>
+
+		
+	
+		<li class="" id="comment-75580">
+
+		<!-- Gravatar -->
+		<div class="comment-gravatar">
+			<img alt='' src='http://1.gravatar.com/avatar/4e65927bf1de462738eb5644190f4bc9?s=48&#038;d=http%3A%2F%2Fwww.nuonsoft.com%2Fblog%2Fwp-content%2Fthemes%2Ffresh%2Fimages%2Fdefault_gravatar.gif&#038;r=g' srcset='http://1.gravatar.com/avatar/4e65927bf1de462738eb5644190f4bc9?s=96&amp;d=http%3A%2F%2Fwww.nuonsoft.com%2Fblog%2Fwp-content%2Fthemes%2Ffresh%2Fimages%2Fdefault_gravatar.gif&amp;r=g 2x' class='avatar avatar-48 photo' height='48' width='48' />		</div>
+
+		<h3 class="comment-title"><a href='http://www.nuonsoft.com' rel='external nofollow' class='url'>Marc Gregoire</a> said,</h3>
+
+		<p class="comment-meta">
+			Wrote on 			<a href="#comment-75580">
+				February 25, 2014				 @ 7:34 pm			</a>
+					</p>
+
+		<div class="comment-text"><p>In CNuonImg::Open, specify GUID_WICPixelFormat32bppBGRA instead of GUID_WICPixelFormat32bppBGR.<br />
+And modify CNuonImg::Render() to use ::AlphaBlend().</p>
+<p><a href="http://www.nuonsoft.com/blog/2014/02/25/introduction-to-wic-how-to-use-wic-to-load-an-image-and-draw-it-with-tranparency-using-only-gdi/#more-1331" rel="nofollow">See my new blog post.</a></p>
+</div>
+		</li>
+
+		
+	
+	</ol>
+
+	<p class="small">
+		<a href="http://www.nuonsoft.com/blog/2011/10/17/introduction-to-wic-how-to-use-wic-to-load-an-image-and-draw-it-with-gdi/feed/">Comment <abbr title="Really Simple Syndication">RSS</abbr></a>				&#183; <a href="http://www.nuonsoft.com/blog/2011/10/17/introduction-to-wic-how-to-use-wic-to-load-an-image-and-draw-it-with-gdi/trackback/" rel="trackback">TrackBack <abbr title="Uniform Resource Identifier">URI</abbr></a>
+			</p>
+
+
+
+	<h2 id="postcomment">Leave a Comment</h2>
+	<div class="postcomment">
+
+	
+		<form action="http://www.nuonsoft.com/blog/wp-comments-post.php" method="post" id="commentform">
+
+		
+			<p>
+				<strong>Name: (Required)</strong><br/>
+				<input type="text" name="author" id="author" value="" tabindex="1" />
+			</p>
+
+			<p>
+				<strong>E-mail: (Required)</strong><br/>
+				<input type="text" name="email" id="email" value="" tabindex="2" />
+			</p>
+
+			<p>
+				<strong>Website:</strong><br/>
+				<input type="text" name="url" id="url" value="" tabindex="3" />
+			</p>
+
+		
+			<p>
+				<strong>Comment:</strong><br/>
+				<textarea name="comment" id="comment" rows="" cols="" tabindex="4"></textarea>
+			</p>
+
+			<p>
+				<input name="submit" type="submit" id="submit" tabindex="5" value="Say it" />
+				<input type="hidden" name="comment_post_ID" value="711" />
+			</p>
+
+		<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="c835d16394" /></p><p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="90"/></p>
+		</form>
+
+		</div>
+
+		</div>
+
+	
+</td>
+<td background="/images/black_dots.png" style="padding:0;margin:0"><img border="0" src="/images/1x1pixel.gif" width="1" height="1" alt="" /></td>
+<td valign="top">
+
+</div> <!-- end of #content -->
+<div id="sidebar">
+
+	<div class="rssfeeds">
+		<h2 class="feed-title">Available Feeds</h2>
+		<p>
+			<a class="rss" href="feed:http://www.nuonsoft.com/blog/feed/">Entries RSS</a><br/>
+			<a class="rss" href="feed:http://www.nuonsoft.com/blog/comments/feed/">Comments RSS</a>
+		</p>
+	</div>
+
+
+<ul>
+<li id="text-3" class="widget widget_text"><h2 class="widgettitle">About Me</h2>			<div class="textwidget"><p><b><a href="http://www.nuonsoft.com/blog/about/">Marc Gregoire</a></b><br />
+<a href="mailto:marc.gregoire@nuonsoft.com">marc.gregoire@nuonsoft.com</a><br />
+Software Architect<br />
+<a href="http://www.nuonsoft.com/blog/books-i-worked-on/">Books I Worked On</a><br />
+Microsoft MVP VC++ since 2007</p>
+<p align="center"><a target="_blank" href="http://mvp.microsoft.com/en-us/mvp/Marc%20Gregoire-38280"><img border="0" width="178" src="http://www.nuonsoft.com/images/MVP_Horizontal_FullColor.png" alt="MS MVP" height="72" vspace="5" style="width: 178px; height: 72px" title="MS MVP" /></a></p>
+<p align="center"><a target="_blank" href="http://www.microsoft.com/belux/meet/#Marc+Gregoire"><img border="0" width="180" height="150" src="http://www.nuonsoft.com/images/MEET180x150.jpg" alt="I'm a MEET member" vspace="5" title="I'm a MEET member" /></a></p>
+</div>
+		</li><li id="text-4" class="widget widget_text"><h2 class="widgettitle">Author Of</h2>			<div class="textwidget"><p><a href="http://www.wiley.com/buy/1118858050" target="_blank"><b>Professional C++, 3rd Edition</b></a></p>
+<p align="center"><a href="http://www.wiley.com/buy/1118858050" target="_blank"><img src="http://www.nuonsoft.com/images/blog/pro_cpp_3rd.jpg" border="0" width="100" height="125" vspace="5" alt="Professional C++, 3rd Edition"/></p>
+<p></a></p>
+<div id="fb-root"></div>
+<p><script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script></p>
+<div class="fb-like-box" data-href="http://www.facebook.com/professionalcpp" data-width="275" data-height="100" data-show-faces="false" data-border-color="#dddddd" data-stream="false" data-header="false"></div>
+</div>
+		</li><li id="text-5" class="widget widget_text"><h2 class="widgettitle">Belgian C++ Users Group</h2>			<div class="textwidget"><p>Founder of the <a href="http://becpp.org/" target="_blank">Belgian C++ Users Group</a> (BeCPP).<br />
+<center><a href="http://becpp.org/" target="_blank"><img src="http://www.nuonsoft.com/images/blog/BeCPP_Logo_282x64.png" height="40" /></a></center></p>
+</div>
+		</li><li id="meta-3" class="widget widget_meta"><h2 class="widgettitle">Meta</h2>			<ul>
+			<li><a href="http://www.nuonsoft.com/blog/wp-login.php?action=register">Register</a></li>			<li><a href="http://www.nuonsoft.com/blog/wp-login.php">Log in</a></li>
+			<li><a href="http://www.nuonsoft.com/blog/feed/">Entries <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="http://www.nuonsoft.com/blog/comments/feed/">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://wordpress.org/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.org</a></li>			</ul>
+			</li><li id="akismet_widget-2" class="widget widget_akismet_widget"><h2 class="widgettitle">Spam Blocked</h2>
+	<div class="a-stats">
+		<a href="http://akismet.com" target="_blank" title=""><strong class="count">251,881 spam</strong> blocked by <strong>Akismet</strong></a>
+	</div>
+
+</li></ul>
+
+</div> <!-- end of #sidebar -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</td></tr></table>
+
+<div id="bottom">
+
+	<!-- Bottom Left -->
+	<div id="bottom-left">
+		
+		<h2>Recent<span> Entries</span></h2>
+		<ul>
+			<li><a href='http://www.nuonsoft.com/blog/2016/03/16/slides-gdg-presentation-cross-platform-mobile-app-dev-with-vc/'>Slides GDG Presentation Cross-Platform Mobile App Dev with VC++</a></li><li><a href='http://www.nuonsoft.com/blog/2016/02/24/milestone-vs-2015-update-2s-standard-library-is-c11-c14-and-c17-so-far-feature-complete/'>Milestone: VS 2015 Update 2&#8217;s Standard Library is C++11, C++14, and C++17-so-far Feature Complete</a></li><li><a href='http://www.nuonsoft.com/blog/2015/11/11/videos-are-online-of-the-windows-10-dev-day-belgium/'>Videos are online of the Windows 10 Dev Day Belgium</a></li><li><a href='http://www.nuonsoft.com/blog/2015/10/22/next-becpp-ug-meeting-planned-for-december-3th-2015/'>Next BeCPP UG Meeting Planned For December 3th, 2015</a></li><li><a href='http://www.nuonsoft.com/blog/2015/10/10/slides-of-my-cppcon-2015-presentation-cross-platform-mobile-app-development-in-vc2015/'>Slides of my CppCon 2015 Presentation “Cross Platform Mobile App Development in VC++2015”</a></li><li><a href='http://www.nuonsoft.com/blog/2015/07/29/cppcon-2015-program/'>CppCon 2015 Program</a></li><li><a href='http://www.nuonsoft.com/blog/books-i-worked-on/'>Books I Worked On</a></li><li><a href='http://www.nuonsoft.com/blog/2015/05/31/vc-2015-rc-includes-a-dynamic-dialog-layout-feature/'>VC++ 2015 RC Includes a Dynamic Dialog Layout Feature</a></li><li><a href='http://www.nuonsoft.com/blog/2015/05/31/c111417-features-in-vs-2015-rc/'>C++11/14/17 Features In VS 2015 RC</a></li><li><a href='http://www.nuonsoft.com/blog/2015/05/23/next-becpp-ug-meeting-planned-for-june-18th-2015/'>Next BeCPP UG Meeting Planned For June 18th, 2015</a></li>		</ul>
+			</div>
+	
+	<!-- Bottom Mid -->
+	<div id="bottom-mid">
+		<h2>Your<span> List</span></h2>
+		<ul>
+			<li><a href="http://becpp.org/" target="_blank">Belgian C++ Users Group</a></li>
+<li><a href="http://www.codeguru.com/" target="_blank">CodeGuru</a></li>
+<li><a href="http://codexpert.ro/blog/" target="_blank">codexpert blog</a></li>
+<li><a href="http://www.snowball.be/" rel="friend" target="_blank">Gill Cleeren&#039;s blog on .net programming</a></li>
+<li><a href="http://isocpp.org" target="_blank">ISO C++</a></li>
+<li><a href="http://blog.krisvandermast.com/" rel="friend" target="_blank">Kris van der Mast&#039;s blog</a></li>
+<li><a href="http://geekswithblogs.net/claeyskurt/Default.aspx" rel="friend" target="_blank">Kurt Claeys&#039;s Blog</a></li>
+<li><a href="http://www.jmedved.com/" rel="friend" target="_blank">Medo&#039;s Blog</a></li>
+<li><a href="http://www.nuonsoft.com/" rel="me" target="_blank">NuonSoft</a></li>
+		</ul>
+	</div>
+
+	<!-- Bottom Right -->
+	<!--<div id="bottom-right">
+		<h2>Else<span> wheres</span></h2>
+		<ul>
+			<li><a href="http://becpp.org/" target="_blank">Belgian C++ Users Group</a><br />0</li>
+<li><a href="http://isocpp.org" target="_blank">ISO C++</a><br />0</li>
+<li><a href="http://codexpert.ro/blog/" target="_blank">codexpert blog</a><br />0</li>
+<li><a href="http://blog.krisvandermast.com/" rel="friend" target="_blank">Kris van der Mast&#039;s blog</a><br />0</li>
+<li><a href="http://geekswithblogs.net/claeyskurt/Default.aspx" rel="friend" target="_blank">Kurt Claeys&#039;s Blog</a><br />0</li>
+<li><a href="http://www.jmedved.com/" rel="friend" target="_blank">Medo&#039;s Blog</a><br />0</li>
+<li><a href="http://www.codeguru.com/" target="_blank">CodeGuru</a><br />0</li>
+<li><a href="http://www.nuonsoft.com/" rel="me" target="_blank">NuonSoft</a><br />0</li>
+<li><a href="http://www.snowball.be/" rel="friend" target="_blank">Gill Cleeren&#039;s blog on .net programming</a><br />0</li>
+		</ul>
+	</div>
+	-->
+</div> <!-- end of #bottom -->
+
+<div id="footer">
+
+	<!-- Credits -->
+	<a href="http://wordpress.org" title="Powered by WordPress">
+		<img class="credits" src="http://www.nuonsoft.com/blog/wp-content/themes/fresh/images/wordpress.gif" alt="Designed by Wolfgang Bartelme" />
+	</a>
+	<a href="http://www.bartelme.at/" title="Designed by Wolfgang Bartelme">
+		<img class="credits" src="http://www.nuonsoft.com/blog/wp-content/themes/fresh/images/bartelme.gif" alt="Designed by Wolfgang Bartelme" />
+	</a>
+	
+	<!-- Copyright -->
+	<p>
+		&copy; 2016		<a href="http://www.nuonsoft.com/blog#top" title="Marc Gregoire&#8217;s Blog">Marc Gregoire&#8217;s Blog</a>
+		 | 		<a href="http://www.ilemoned.com/wordpress/wptheme-fresh/" title="Fresh theme for WordPress">Fresh</a>
+		<br/>
+		<a class="validate" href="http://validator.w3.org/check/referer" title="Valid XHTML 1.0 Strict">XHTML</a>
+		<a class="validate" href="http://jigsaw.w3.org/css-validator/validator?uri=http://www.nuonsoft.com/blog/wp-content/themes/fresh/style.css" title="Valid CSS 2.0">CSS</a>
+		<!-- a class="validate" href="http://www.contentquality.com/fulloptions.asp?Url1=http://www.nuonsoft.com/blog">508</a-->
+	</p>
+
+	
+<script type="text/javascript"><!--
+wpa2a.targets=[
+{title:"Introduction to WIC: How to use WIC to load an image, and draw it with GDI?",url:"http://www.nuonsoft.com/blog/2011/10/17/introduction-to-wic-how-to-use-wic-to-load-an-image-and-draw-it-with-gdi/"}];
+wpa2a.html_done=true;if(wpa2a.script_ready&&!wpa2a.done)wpa2a.init();wpa2a.script_load();
+//--></script>
+<script type='text/javascript' src='http://www.nuonsoft.com/blog/wp-content/plugins/akismet/_inc/form.js?ver=41fa24b8772c46e3029f839c8be5ce7c'></script>
+<script type='text/javascript' src='http://www.nuonsoft.com/blog/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=41fa24b8772c46e3029f839c8be5ce7cb'></script>
+<script type='text/javascript' src='http://www.nuonsoft.com/blog/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushCpp.js?ver=41fa24b8772c46e3029f839c8be5ce7cb'></script>
+<script type='text/javascript'>
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "http://www.nuonsoft.com/blog/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "http://www.nuonsoft.com/blog/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeDefault.css?ver=3.0.9b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.defaults['toolbar'] = false;
+	SyntaxHighlighter.all();
+</script>
+<script type='text/javascript' src='http://www.nuonsoft.com/blog/wp-includes/js/wp-embed.min.js?ver=41fa24b8772c46e3029f839c8be5ce7c'></script>
+
+</div> <!-- end of #footer -->
+
+</div> <!-- end of #wrapper -->
+</div> <!-- end of #outline -->
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-3003602-1";
+urchinTracker();
+</script>
+
+</body>
+</html> <!-- GOOD BYE -->

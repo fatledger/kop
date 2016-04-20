@@ -1,0 +1,12 @@
+﻿html
+{
+  height:100%;
+  background:#ffffff
+}
+body 
+{  
+  background: white url("images/header.jpg") no-repeat left top;
+  width: 980px;  
+  margin:0 auto;
+  padding:0px;
+}

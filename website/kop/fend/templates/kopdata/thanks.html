@@ -1,0 +1,16 @@
+﻿{% extends "base.html" %}
+{% block linkstyle %}
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'kopdata/style.css' %}" />
+{% endblock %}
+
+{% block content %}
+{% load staticfiles %}
+
+<tr><td style="PADDING-LEFT: 0px; PADDING-TOP: 10px; PADDING-BOTTOM: 0px">
+	<table width = "100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF">	
+	<tr><td align = "left" valign = "center" style="PADDING-BOTTOM: 10px; PADDING-LEFT: 10px; PADDING-TOP: 10px;">
+	<font style="font-size:16px" face="Arial" color="000000">谢谢您，{{ name }}! 我们将尽快与您联系！</font></td></tr>	
+	</table>
+</td></tr>
+{% endblock %}
