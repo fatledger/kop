@@ -1,0 +1,19 @@
+{% extends "base_query.html" %}
+
+{% block title %}Search by User{% endblock %}
+
+{% block heading %}
+  <h2>Search by User</h2>
+{% endblock %}
+
+{% block content %}
+
+<form action="/bookmark/search/" method="post"> {% csrf_token %}
+<ul class="list-unstyled">
+{{ form.as_table }}
+</ul>
+
+<input type="submit" value="Submit">
+</form>
+
+{% endblock %}

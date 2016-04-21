@@ -1,0 +1,15 @@
+{% extends "base_query.html" %}
+
+{% block title %}Latest bookmarks{% endblock %}
+
+{% block heading %}
+  <h2>Latest bookmarks</h2>
+{% endblock %}
+
+{% block content %}
+  <ul class="list-unstyled">
+  {% for bookmark in bookmarks %}
+    <p>{{ bookmark.title }} - {{ bookmark.url }}<p>
+  {% endfor %}
+  </ul>
+{% endblock %}
