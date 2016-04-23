@@ -12,31 +12,31 @@ from .forms import UploadFileForm, RequestForm
 
 # Create your views here.
 def index(request):    
-    return render(request, 'kopdata/index.html')
+    return render(request, 'fend/index.html')
 
 def analysis(request):
-    return render(request, 'kopdata/dataanalysis.html')
+    return render(request, 'fend/dataanalysis.html')
 
 def integrate(request):
-    return render(request, 'kopdata/dataintegrate.html')
+    return render(request, 'fend/dataintegrate.html')
 
 def share(request):
-    return render(request, 'kopdata/datashare.html')
+    return render(request, 'fend/datashare.html')
 
 def aboutus(request):
-    return render(request, 'kopdata/about_us.html')
+    return render(request, 'fend/about_us.html')
 
 def thanks(request):
-    return render(request, 'kopdata/thanks.html')
+    return render(request, 'fend/thanks.html')
 
 def loginview(request):
-    template_response = auth_views.login(request, 'kopdata/login.html')
+    template_response = auth_views.login(request, 'fend/login.html')
     return template_response
     
 def logoutview(request):
     logout(request)
     # Redirect to a success page.
-    return render(request, 'kopdata/index.html')
+    return render(request, 'fend/index.html')
 
 def getUserInput(request):
     # if this is a POST request we need to process the form data
@@ -67,19 +67,19 @@ def getUserInput(request):
                         userprofile.state = form.cleaned_data.get("state")
                         userprofile.country = form.cleaned_data.get("country")
                         userprofile.save()
-                        return render(request, 'kopdata/mydata.html')
+                        return render(request, 'fend/mydata.html')
     # if a GET (or any other method) we'll create a blank form
     else:
         form = UserForm()
-    return render(request, 'kopdata/create_user.html', {'form': form})
+    return render(request, 'fend/create_user.html', {'form': form})
 
 def getUserProfile(request):
     try:
         data = UserProfile.objects.get(my_user_name=request.user.username)
     except Mydata.DoesNotExist:
-        return render(request, 'kopdata/myaccount.html')
+        return render(request, 'fend/myaccount.html')
     context = {'user_data': data}
-    return render(request, 'kopdata/myaccount.html', context)
+    return render(request, 'fend/myaccount.html', context)
  
 def editUserProfile(request):
     # if this is a POST request we need to process the form data
@@ -98,7 +98,7 @@ def editUserProfile(request):
             userprofile.country = form.cleaned_data.get("country")
             userprofile.save()
             context = {'user_data': userprofile}
-            return render(request, 'kopdata/myaccount.html', context)
+            return render(request, 'fend/myaccount.html', context)
     # if a GET (or any other method) we'll create a blank form
     else:
         form = UserProfileForm()
@@ -107,7 +107,7 @@ def editUserProfile(request):
         'address' : data.address, 'city' : data.city, 'state' : data.state,
         'country' : data.country}
         form = UserProfileForm(datalist, initial=datalist)
-    return render(request, 'kopdata/edit_user.html', {'form': form})
+    return render(request, 'fend/edit_user.html', {'form': form})
 
 def changePassword(request):
     if request.method == 'POST':
@@ -122,30 +122,30 @@ def changePassword(request):
                 user.save()
                 userprofile = UserProfile.objects.get(my_user_name=request.user.username)            
                 context = {'user_data': userprofile}
-                return render(request, 'kopdata/myaccount.html', context)
+                return render(request, 'fend/myaccount.html', context)
             else:
-                return render(request, 'kopdata/pwpwpw.html',{'error':'You have entered wrong old password','form': form})
+                return render(request, 'fend/pwpwpw.html',{'error':'You have entered wrong old password','form': form})
         else:
-           return render(request, 'kopdata/pwpwpw.html',{'error':'You have entered old password','form': form})
+           return render(request, 'fend/pwpwpw.html',{'error':'You have entered old password','form': form})
     else:
         form = ChangePWForm()
-    return render(request, 'kopdata/pwpwpw.html', {'form': form})
+    return render(request, 'fend/pwpwpw.html', {'form': form})
      
 def mydata(request):
     try:
         data_list = Mydata.objects.filter(my_user_name=request.user.username)
     except Mydata.DoesNotExist:
-        return render(request, 'kopdata/mydata.html')
+        return render(request, 'fend/mydata.html')
     context = {'user_data_list': data_list}
-    return render(request, 'kopdata/mydata.html', context)
+    return render(request, 'fend/mydata.html', context)
 
 def mydetail(request, mydata_id):
     try:
         detaildata = Mydata.objects.get(id=mydata_id)
     except Mydata.DoesNotExist:
-        return render(request, 'kopdata/mydata.html')
+        return render(request, 'fend/mydata.html')
     context = {'detail_data': detaildata}
-    return render(request, 'kopdata/mydetail.html', context)
+    return render(request, 'fend/mydetail.html', context)
 
 def addmydata(request):
     if request.method == 'POST':
@@ -165,11 +165,11 @@ def addmydata(request):
             data.save()
             data_list = Mydata.objects.filter(my_user_name=request.user.username)
             context = {'user_data_list': data_list}
-            return render(request, 'kopdata/mydata.html', context)
+            return render(request, 'fend/mydata.html', context)
     # if a GET (or any other method) we'll create a blank form
     else:
         form = DataForm()
-    return render(request, 'kopdata/adddata.html', {'form': form})
+    return render(request, 'fend/adddata.html', {'form': form})
 
 def editmydata(request, mydata_id):
     if request.method == 'POST':
@@ -188,7 +188,7 @@ def editmydata(request, mydata_id):
             data.data_des = form.cleaned_data.get("data_des")            
             data.save()
             context = {'detail_data': data}
-            return render(request, 'kopdata/mydetail.html', context)
+            return render(request, 'fend/mydetail.html', context)
     # if a GET (or any other method) we'll create a blank form
     else:        		
         data = Mydata.objects.get(id=mydata_id)
@@ -196,7 +196,7 @@ def editmydata(request, mydata_id):
 		'sick_type' : data.sick_type, 'life_status' : data.life_status, 'ICDO3' : data.ICDO3,
         'patho_status' : data.patho_status, 'data_des' : data.data_des}
         form = DataForm(datalist, initial=datalist)
-    return render(request, 'kopdata/editdata.html', {'form': form})
+    return render(request, 'fend/editdata.html', {'form': form})
 
 def upload_file(request, mydata_id):
     if request.method == 'POST':
@@ -206,10 +206,10 @@ def upload_file(request, mydata_id):
             data.genome_file = request.FILES['genome_file']
             data.save()
             context = {'detail_data': data}
-            return render(request, 'kopdata/mydetail.html', context)
+            return render(request, 'fend/mydetail.html', context)
     else:
         form = UploadFileForm()
-    return render(request, 'kopdata/uploadfile.html', {'form': form})
+    return render(request, 'fend/uploadfile.html', {'form': form})
 
 def addContactInfo(request):
     if request.method == 'POST':
@@ -231,11 +231,11 @@ def addContactInfo(request):
             data.description = form.cleaned_data.get("description")
             data.save()            
             context = {'name': data.name}
-            return render(request, 'kopdata/thanks.html', context)
+            return render(request, 'fend/thanks.html', context)
     # if a GET (or any other method) we'll create a blank form
     else:
         form = RequestForm()        
-    return render(request, 'kopdata/datashare.html', {'form': form})
+    return render(request, 'fend/datashare.html', {'form': form})
 
 def addmyquery(request, mydata_id):
     if request.method == 'POST':
@@ -256,11 +256,11 @@ def addmyquery(request, mydata_id):
             query.genome_file = data.genome_file
             query.save()
             #add run query function here, the results may also write into a "result" table, and then			
-            #pass the record for the results to a 'kopdata/results.html'. 
+            #pass the record for the results to a 'fend/results.html'. 
             #use query.genome_file.content.path for the file name
 			#or MEDIA_ROOT + query.genome_file
             context = {'detail_data': data}
-            return render(request, 'kopdata/mydetail.html', context)            
+            return render(request, 'fend/mydetail.html', context)            
     # if a GET (or any other method) we'll create a blank form
     else:
         form = DataForm()
@@ -269,4 +269,4 @@ def addmyquery(request, mydata_id):
 		'sick_type' : data.sick_type, 'life_status' : data.life_status, 'ICDO3' : data.ICDO3,
         'patho_status' : data.patho_status, 'data_des' : data.data_des}
         form = DataForm(datalist, initial=datalist)
-    return render(request, 'kopdata/analysis.html', {'form': form})
+    return render(request, 'fend/analysis.html', {'form': form})

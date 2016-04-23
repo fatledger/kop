@@ -1,12 +1,14 @@
+# coding=utf-8
+
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
-
-# Create your models here.
-@python_2_unicode_compatible # only if you need to support Python 2
 
 def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
     return 'user_{0}/{1}'.format(instance.my_user_name, filename)
+
+# Create your models here.
+#@python_2_unicode_compatible # only if you need to support Python 2
 
 class UserProfile(models.Model):
     my_user_name = models.CharField(max_length=100)

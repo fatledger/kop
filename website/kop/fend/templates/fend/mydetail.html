@@ -1,0 +1,35 @@
+﻿{% extends "base.html" %}
+{% block linkstyle %}
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'fend/style.css' %}" />
+{% endblock %}
+
+{% block content %}
+{% load staticfiles %}
+{% if request.user.is_authenticated %}
+<tr><td style="PADDING-TOP: 8px;">
+	<table width = "100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF">
+	<tr><td>
+		<table width = "100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF">
+		<tr><td align="left" width="70%" style="PADDING-LEFT: 10px; PADDING-TOP: 10px; PADDING-BOTTOM: 10px;PADDING-RIGHT: 10px"><font style="font-size:16px" face="Arial" color="000000">数据名称： {{ detail_data.data_name }}</font></td>
+		<td align="right" width="15%" style="PADDING-TOP: 10px; PADDING-BOTTOM: 10px;PADDING-RIGHT: 10px"><a href="editdata.html" TARGET="_self">修改数据</a></td>
+		<td align="right" width="15%" style="PADDING-TOP: 10px; PADDING-BOTTOM: 10px;PADDING-RIGHT: 10px"><a href="analysis.html" TARGET="_self">数据分析</a></td></tr>
+		</table>
+	</td></tr>
+	<tr><TD align=left height = 2 bgColor = #22B14C></TD></tr>
+	<tr><td align = "left" valign = "center" style="PADDING-RIGHT: 20px; PADDING-LEFT: 10px; PADDING-TOP: 10px;">
+		<table width = "780" border = "0">  		
+		<tr><td align = "left" style="PADDING-TOP: 10px;">性别：</td><td>{{ detail_data.getGenderStr }}</td><td>吸烟史：</td><td>{{ detail_data.getSmokeStr }}</td></tr>
+		<tr><td align = "left" style="PADDING-TOP: 10px;">癌症类型：</td><td>{{ detail_data.getSickTypeStr }}</td><td>生存状态：</td><td>{{ detail_data.getLifeStatusStr }}</td></tr>
+		<tr><td align = "left" style="PADDING-TOP: 10px;">病理状态：</td><td>{{ detail_data.patho_status }}期</td><td>ICD-O-3：</td><td>{{ detail_data.ICDO3 }}</td></tr>		
+		<tr><td align = "left" style="PADDING-TOP: 10px;">描述：</td><td>{{ detail_data.data_des }}</td><td></td><td></td></tr>
+		<tr><td align = "left" style="PADDING-TOP: 10px;">基因组序列：</td><td>{{ detail_data.genome_file }}</td><td><a href="uploadfile.html" TARGET="_self">上传文件</a></td><td></td></tr>		
+		</table>
+	</td></tr>
+	</table>
+</td></tr>
+{% else %}
+<tr><td style="PADDING-TOP: 8px;">
+<p><font style="font-size:16px" face="Arial" color="000000">您必须登录，才可显示内容。</p>
+{% endif %}
+{% endblock %}

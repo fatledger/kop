@@ -1,0 +1,30 @@
+﻿{% extends "base.html" %}
+{% block linkstyle %}
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'fend/style.css' %}" />
+{% endblock %}
+
+{% block content %}
+{% load staticfiles %}
+<tr><td style="PADDING-TOP: 8px;">
+	<table width = "100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF">
+	<tr> 	
+	<td style="PADDING-TOP: 0px; PADDING-LEFT: 10px; PADDING-RIGHT: 20px">
+	<p><font style="font-size:16px" face="Arial" color="000000">利用我们提供的分析工具，您可以将癌症患者的基因数据，其它遗传和用药数据与我们的数据进行多方面的比较，确诊致病因素并选定对患者最有效的用药方案。
+	我们的数据主要来源于美国的公共数据库(TCGA)，包括了主要的癌症种类，共33种。我们通过采用云计算平台和Amazon的Redshift技术，收集和整理了TCGA的数据，解决了大数据的应用和贮存问题。
+	</font></p>
+	<p><font style="font-size:16px" face="Arial" color="000000">数据分析分为三个步骤： 1）上传数据； 2)比较分析; 3)列出比较结果。	
+	</font></p>		
+	</td></tr>	
+	<tr><td align = "left" valign = "center" style="PADDING-RIGHT: 20px; PADDING-LEFT: 10px">
+	<font style="font-size:16px" face="Arial" color="000000">注意：您需要成为我们的注册用户，才可以利用我们提供的分析工具。	
+	</td></tr>
+	<tr><td style="PADDING-TOP: 20px; PADDING-LEFT: 10px; PADDING-RIGHT: 20px"><font style="font-size:22px" face="Arial" color="000099">
+	联系我们:</font><br>
+	<font style="font-size:16px" face="Arial" color="000000">
+		sales@kopgenome.com
+	</font>
+	</td></tr>
+	</table>
+</td></tr>
+{% endblock %}

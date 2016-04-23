@@ -1,0 +1,74 @@
+﻿{% extends "base.html" %}
+{% block linkstyle %}
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'fend/style.css' %}" />
+{% endblock %}
+
+{% block content %}
+{% load staticfiles %}
+<tr><td style="PADDING-LEFT: 0px; PADDING-TOP: 10px; PADDING-BOTTOM: 0px">
+	<table width = "100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF">
+	<tr> 	
+	<td style="PADDING-TOP: 0px; PADDING-LEFT: 10px; PADDING-RIGHT: 20px">
+	<p><font style="font-size:16px" face="Arial" color="000000">靠谱基因数据是面向精准医疗和基因诊断的基因大数据供应商。我们围绕客户的需求，提供更可靠，更精准和更有效率的大数据解决方案。
+我们的数据整合了癌症病人的基因组学和临床治疗信息，包括全基因组DNA序列、全外显子组DNA序列、表达谱、小RNA、表观遗传修饰、蛋白质组、代谢组检测，用药反应等。
+	</font><p>
+	<p><font style="font-size:16px" face="Arial" color="000000">
+		靠谱基因数据的主要业务包括: <br>
+		<table bgcolor="#FFFFFF" border="0" cellspacing="0" cellpadding="0">
+ 			<tr><td style="PADDING-TOP: 0px; PADDING-LEFT: 40px; PADDING-RIGHT: 20px">
+			<li>数据分析服务: 利用我们提供的分析工具， 您可以将癌症患者的基因数据，其它遗传和用药数据与我们的数据进行多方面的比较，确诊致病因素并选定对患者最有效的用药方案。
+			<li>数据整合服务: 目前的电子病历系统无法检索基因检测结果。我们的数据平台正好可以弥补这方面的不足。您可以通过购买我们的数据或建造数据交换的软件界面，形成新一代的，面向精准医疗的信息平台。
+			<li>数据应用服务: 通过我们的平台，您的数据将可以为更多的客户服务，您只须专心于数据采集的工作，我们为您完成数据管理，开拓用户市场的工作。					
+			</td></tr>
+		</table>
+	</font></p>		
+	</td></tr>
+	<tr> 	
+	<td style="PADDING-TOP: 20px; PADDING-LEFT: 10px; PADDING-RIGHT: 20px"><font style="font-size:22px" face="Arial" color="000099">
+	核心团队:</font><br>
+	<table width = 888 border="0" cellspacing="0" cellpadding="0" bgColor=#D6E3BC>
+	<tr><td style="PADDING-LEFT: 4px; PADDING-TOP: 0px; PADDING-BOTTOM: 0px">
+	<IMG border=0 src="{% static "fend/images/chenhaoyuan.jpg" %}" width = "80"></td>
+	<td valign = "center" style="PADDING-TOP: 0px; PADDING-LEFT: 20px; PADDING-RIGHT: 20px" bgColor=#D6E3BC>
+	<font style="font-size:16px" face="Arial" color="000000">
+	<b>陈浩源</b>, 董事长，美国佐治亚大学生物化学博士，计算机科学硕士。具有分子生物学研究和开发生物学, 医学软件的经验。主要主导开发的软件有
+	WS_FTP Pro, BVTech Plasmid, GrowthChart SDK, 等。
+	</font>
+	</td></tr>
+	<tr><td style="PADDING-LEFT: 4px; PADDING-TOP: 0px; PADDING-BOTTOM: 0px">
+	<IMG border=0 src="{% static "fend/images/menghe.jpg" %}" width = "80"></td>
+	<td valign = "center" style="PADDING-TOP: 0px; PADDING-LEFT: 20px; PADDING-RIGHT: 20px" bgColor=#D6E3BC>
+	<font style="font-size:16px" face="Arial" color="000000">
+	<b>孟和</b>, 首席科学家，博士/教授/系主任。动物遗传学家、基因组学家。全球首例骆驼基因组计划发起人与完成人。主持国家和上海市各类科研项目15项。
+	在《Nature Communications》、《Scientific Reports》、《Moleculor & Cellular Proteomics》等著名专业学术期刊上发表学术论文70余篇。
+	</font>
+	</td></tr>
+	<tr><td style="PADDING-LEFT: 4px; PADDING-TOP: 0px; PADDING-BOTTOM: 0px">
+	<IMG border=0 src="{% static "fend/images/yudong.jpg" %}" width = "80"></td>
+	<td valign = "center" style="PADDING-TOP: 0px; PADDING-LEFT: 20px; PADDING-RIGHT: 20px" bgColor=#D6E3BC>
+	<font style="font-size:16px" face="Arial" color="000000">
+	<b>尤东</b>，副总裁兼大数据及云技术部总监，美国密歇根大学物理学博士，计算机硕士。有多年在亚马逊等顶级技术公司工作的经验。擅长大型数据的采集, 整理, 分析,  挖掘, 和应用。
+	精通云计算，负责的云计算数据平台曾支持过包括美国航空航天局火星登陆项目在内的尖端应用。
+	</font>
+	</td></tr>
+	<tr><td style="PADDING-LEFT: 4px; PADDING-TOP: 0px; PADDING-BOTTOM: 0px">
+	<IMG border=0 src="{% static "fend/images/zhangyan.jpg" %}" width = "80"></td>
+	<td valign = "center" style="PADDING-TOP: 0px; PADDING-LEFT: 20px; PADDING-RIGHT: 20px" bgColor=#D6E3BC>
+	<font style="font-size:16px" face="Arial" color="000000">
+	<b>章岩</b>，副总裁兼生物信息部总监，遗传学博士，计算机硕士。作为分子生物学家和生物信息学家在美国先后任职于佐治亚医学院和弗吉尼亚理工学院生物信息研究所，CSRA公司。
+	在许多国际著名期刊（如《Nature Genetics》，《Nature Communication》，《Blood》, 以及《Journal of immunology》）发表过多篇极具影响力的文章。
+	</font>
+	</td></tr>
+	</table>
+	</td></tr>
+	<tr> 	
+	<td style="PADDING-TOP: 20px; PADDING-LEFT: 10px; PADDING-RIGHT: 20px"><font style="font-size:22px" face="Arial" color="000099">
+	联系我们:</font><br>
+	<font style="font-size:16px" face="Arial" color="000000">
+		sales@kopgenome.com
+	</font>
+	</td></tr>
+	</table>
+</td></tr>
+{% endblock %}

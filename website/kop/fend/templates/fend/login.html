@@ -1,0 +1,47 @@
+﻿{% extends "base.html" %}
+{% block linkstyle %}
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'fend/style.css' %}" />
+{% endblock %}
+
+{% block content %}
+{% if form.errors %}
+<tr><td width="100%" align="left" style="PADDING-LEFT: 200px; PADDING-TOP: 20px;">
+<p>Your username and password didn't match. Please try again.</p>
+</td></tr>
+{% endif %}
+{% if next %}
+	{% if user.is_authenticated %}
+	<tr><td width="100%" style="PADDING-LEFT: 200px; PADDING-TOP: 20px;">
+	<p>Your account doesn't have access to this page. To proceed, please login with an account that has access.</p>
+	</td></tr>
+	{% else %}
+	<tr><td width="100%" style="PADDING-LEFT: 200px; PADDING-TOP: 20px;">
+	<p>Please login to see this page.</p>
+	</td></tr>
+	{% endif %}
+{% endif %}
+<tr><td width="100%" style="PADDING-LEFT: 200px; PADDING-TOP: 20px;">
+<form method="post" action="login.html">
+{% csrf_token %}
+<table>
+<tr>
+<td style="PADDING-LEFT: 0px; PADDING-TOP: 20px;">{{ form.username.label_tag }}</td>
+<td style="PADDING-LEFT: 0px; PADDING-TOP: 20px;">{{ form.username }}</td>
+</tr>
+<tr>
+<td style="PADDING-LEFT: 2px; PADDING-TOP: 20px;">{{ form.password.label_tag }}</td>
+<td style="PADDING-LEFT: 0px; PADDING-TOP: 20px;">{{ form.password }}</td>
+</tr>
+<tr><td style="PADDING-LEFT: 2px; PADDING-TOP: 20px;"><input type="submit" value="login" />
+<input type="hidden" name="next" value="{{ next }}" /></td><td></td></tr>
+</table>
+</form>
+</td></tr>
+<tr><td width="100%" align="left" style="PADDING-LEFT: 200px; PADDING-TOP: 20px;">
+<p>尚未注册? <a href="create_user.html" target="_self">点击这里开设新帐号</a></p>
+</td></tr>
+<tr><td width="100%" align="left" style="PADDING-LEFT: 200px; PADDING-TOP: 20px;">
+<p>忘了密码? <a href="resetpwpwpw.html" target="_self">点击这里重设密码</a></p>
+</td></tr>
+{% endblock %}

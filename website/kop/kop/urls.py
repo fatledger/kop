@@ -17,7 +17,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^kopdata/', include('kopdata.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^', include('kopdata.urls')),
+    url(r'^fend/', include('fend.urls')),
+    url(r'^', include('fend.urls')),
 ]
