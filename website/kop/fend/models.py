@@ -1,4 +1,4 @@
-# coding=utf-8
+# encoding=utf-8
 
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
@@ -8,7 +8,7 @@ def user_directory_path(instance, filename):
     return 'user_{0}/{1}'.format(instance.my_user_name, filename)
 
 # Create your models here.
-#@python_2_unicode_compatible # only if you need to support Python 2
+# @python_2_unicode_compatible # only if you need to support Python 2
 
 class UserProfile(models.Model):
     my_user_name = models.CharField(max_length=100)
@@ -41,10 +41,10 @@ class Mydata(models.Model):
         return self.data_des
 
     def getGenderStr(self):
-        if self.gender == 'M':
-            return '男'
+        if self.gender == u'M':
+            return u'男'
         else:
-            return '女'
+            return u'女'
 
     def getSmokeStr(self):
         if self.smoke_status == 'NS':
@@ -58,79 +58,79 @@ class Mydata(models.Model):
 
     def getLifeStatusStr(self):
         if self.life_status == 'L':
-            return '在世'
+            return u'在世'
         elif self.life_status == 'O':
-            return '过世'        
+            return u'过世'        
         else:
             return 'N/A'
 
     def getSickTypeStr(self):
         if self.sick_type == 'LAML':
-            return '急性髓系白血病'
+            return u'急性髓系白血病'
         elif self.sick_type == 'ACC':
-            return '肾上腺皮质癌'
+            return u'肾上腺皮质癌'
         elif self.sick_type == 'BLCA':
-            return '膀胱尿路上皮癌'
+            return u'膀胱尿路上皮癌'
         elif self.sick_type == 'LGG':
-            return '脑低级神经胶质瘤'
+            return u'脑低级神经胶质瘤'
         elif self.sick_type == 'BRCA':
-            return '乳腺浸润性癌'
+            return u'乳腺浸润性癌'
         elif self.sick_type == 'CESC':
-            return '宫颈癌'
+            return u'宫颈癌'
         elif self.sick_type == 'CHOL':
-            return '胆管癌'
+            return u'胆管癌'
         elif self.sick_type == 'COAD':
-            return '结肠癌'
+            return u'结肠癌'
         elif self.sick_type == 'ESCA':
-            return '食管癌'
+            return u'食管癌'
         elif self.sick_type == 'GBM':
-            return '胶质母细胞瘤'
+            return u'胶质母细胞瘤'
         elif self.sick_type == 'HNSC':
-            return '头颈部鳞状细胞癌'
+            return u'头颈部鳞状细胞癌'
         elif self.sick_type == 'KICH':
-            return '肾嫌色'
+            return u'肾嫌色'
         elif self.sick_type == 'KIRC':
-            return '肾透明细胞癌'
+            return u'肾透明细胞癌'
         elif self.sick_type == 'KIRP':
-            return '肾乳头细胞癌'
+            return u'肾乳头细胞癌'
         elif self.sick_type == 'LIHC':
-            return '肝癌'
+            return u'肝癌'
         elif self.sick_type == 'LUAD':
-            return '肺腺癌'
+            return u'肺腺癌'
         elif self.sick_type == 'LUSC':
-            return '肺鳞癌'
+            return u'肺鳞癌'
         elif self.sick_type == 'DLBC':
-            return '淋巴肿瘤弥漫大B细胞淋巴瘤'
+            return u'淋巴肿瘤弥漫大B细胞淋巴瘤'
         elif self.sick_type == 'MV':
-            return '间皮瘤'
+            return u'间皮瘤'
         elif self.sick_type == 'OV':
-            return '卵巢浆液性囊腺癌'
+            return u'卵巢浆液性囊腺癌'
         elif self.sick_type == 'PAAD':
-            return '胰腺癌'
+            return u'胰腺癌'
         elif self.sick_type == 'PCPG':
-            return '嗜铬细胞瘤和副神经节瘤'
+            return u'嗜铬细胞瘤和副神经节瘤'
         elif self.sick_type == 'PRAD':
-            return '前列腺癌'
+            return u'前列腺癌'
         elif self.sick_type == 'READ':
-            return '直肠癌'
+            return u'直肠癌'
         elif self.sick_type == 'SARC':
-            return '肉瘤'
+            return u'肉瘤'
         elif self.sick_type == 'SKCM':
-            return '皮肤黑色素瘤'
+            return u'皮肤黑色素瘤'
         elif self.sick_type == 'STAD':
-            return '胃癌'
+            return u'胃癌'
         elif self.sick_type == 'TGCT':
-            return '睾丸生殖细胞肿瘤'
+            return u'睾丸生殖细胞肿瘤'
         elif self.sick_type == 'THYM':
-            return '胸腺瘤'
+            return u'胸腺瘤'
         elif self.sick_type == 'THCA':
-            return '甲状腺癌'
+            return u'甲状腺癌'
         elif self.sick_type == 'UCS':
-            return '子宫癌肉瘤'
+            return u'子宫癌肉瘤'
         elif self.sick_type == 'UCEC':
-            return '子宫内膜癌'
+            return u'子宫内膜癌'
         elif self.sick_type == 'UVM':
-            return '葡萄膜黑色素瘤'
+            return u'葡萄膜黑色素瘤'
         else:
             return 'N/A'    
         
