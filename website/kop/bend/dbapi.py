@@ -16,7 +16,15 @@ def dictfetchall(cursor):
 def run_query(sql):
   cursor=connections['backend'].cursor()
   cursor.execute(sql)
-  return cursor.fetchall() 
+
+  # retrieve column names
+  cols=[col[0] for col in cursor.description]
+
+  # build multi-dimensional dictionary for resultset
+  return [
+        dict(zip(cols, row))
+        for row in cursor.fetchall()
+    ]
 
 def query_bookmark_by_user(request, username):
     query_string = "select a.username,b.title,b.description,b.url from auth_user a, marcador_bookmark b where a.id=b.owner_id and a.username=%s"
