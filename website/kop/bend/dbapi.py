@@ -15,7 +15,11 @@ def run_query(sql):
         for row in cursor.fetchall()
     ]
 
-def build_sql(filename):
+def patient_detail_query(barcode):
+  sqlstr="select study,clinical_stage from kop_data.clinical_data where participantbarcode='%s'" % barcode
+  return sqlstr
+
+def search_query(filename):
 
   sqlstr="select participantbarcode,study,chromosome,start_position,reference_allele from kop_data.somatic_mutation_calls where "
 
