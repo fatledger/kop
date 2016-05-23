@@ -36,4 +36,3 @@ def search_query(filename):
       sqlstr = sqlstr + where_clause
 
   return sqlstr
-
